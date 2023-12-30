@@ -5,8 +5,27 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        h1{
+            width: 100%;
+        }
+        .pdfwork,.afterupload{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: 100%;
+        }
+        .pdfwork *{
+            margin-top: 5px;
+        }
+        .afterupload{
+            display: none;
+        }
+    </style>
 </head>
 <body>
+    <h1>ExtractorPDF</h1>
     <div class="pdfwork">
         <span>Select PDF</span>
         <input type="file" class="selectpdf">
@@ -20,6 +39,12 @@
              <textarea class="pdftext"></textarea>
         </div>
     </div>
+    <script>
+        let pdfinput = document.querySelector(".selectpdf");
+        let pwd = document.querySelector(".pwd");
+        let upload = document.querySelector(".upload");
+        let afterupload = document.querySelector(".afterupload");
+    </script>
 </body>
 </html>
-<!-- min 1:55 -->
+<!-- min 7:25 -->
