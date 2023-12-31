@@ -7,10 +7,7 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8pSTo/VJSywl7ZreYvvtUso7fKevpsI+pYVVwnu82YO0q3V6eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-        h1{
-            width: 100%;
-        }
-        .pdfwork,.afterupload{
+        .pdfwork,.afterupload,h1{
             display: flex;
             align-items: center;
             justify-content: center;
@@ -30,55 +27,43 @@
 </head>
 
 <body>
-    <h1>ExtractorPDF</h1>
+    <h1>ExtractorPDFtoTXT</h1>
     <div class="pdfwork">
-        <button class="another" onclick="location.reload()">Extract Another PDF</button>
-        <span>Select PDF</span>
+        <button class="another" onclick="location.reload()">Extrair outro PDF</button>
         <input type="file" class="selectpdf">
-        <span>Password :</span>
-        <input type="password" class="pwd" placeholder='optional'>
-        <button class="upload">Upload</button>
+        <button class="upload">Carregar</button>
         <div class="afterupload">
-            <span>Select Page</span>
+            <span>Selecionar Página</span>
             <select class="selectpage" onchange="afterProcess()"></select>
-            <a href="" class="download" download>Download PDF Text</a>
+            <a href="" class="download" download>Baixar texto</a>
              <textarea class="pdftext"></textarea>
         </div>
     </div>
     <script>
         let pdfinput = document.querySelector(".selectpdf");
-        let pwd = document.querySelector(".pwd");
         let upload = document.querySelector(".upload");
         let afterupload = document.querySelector(".afterupload");
         let select = document.querySelector("select");
         let download = document.querySelector(".download");
         let pdftext = document.querySelector(".pdftext");
         upload.addEventListener('click',()=>{
-            let file = pdfinput.file[0];
+            let file = pdfinput.files[0];
             if(file!=undefined&&file.type=="application/pdf"){
                 let fr = new FileReader();
                 fr.readAsDataURL(file)
                 fr.onload=()=>{
                     let res = fr.result;
-                    if(pwd.value==""){
-                        extractText(res,false)
-                    }else{
-                        extractText(res,true)
-                    }
+                    extractText(res)
                 }
             }else{
                 alert("select a valid pdf file")
             }
         })
         let alltext = [];
-        async function extractText(url,pass) {
+        async function extractText(url) {
             try{
                 let pdf;
-                if(pass){
-                    pdf = await pdfjsLib.getDocument({url:url, password:pwd.value}).promise;
-                }else{
-                    pdf = await pdfjsLib.getDocument(url).promise;
-                }
+                pdf = await pdfjsLib.getDocument(url).promise;
                 let pages = pdf.numPages;
                 for(let i=1;i<=pages;i++){
                     let page = await pdf.getPage(i)
@@ -102,6 +87,8 @@
             download.href="data:text/plain;charset=utf-8,"+encodeURIComponent(alltext[select.value-1])
             afterupload.style.display="flex";
             document.querySelector(".another").style.display="unset";
+            document.querySelector(".upload").style.display="none";
+            document.querySelector(".selectpdf").style.display="none";
         }
     </script>
 </body>
